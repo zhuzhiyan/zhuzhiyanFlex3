@@ -21,6 +21,7 @@
 
 
 
+
     </fx:Style>
 <s:titleContent>
 <s:Label id="lbldb" text ="待办事项" color="blue" fontWeight="bold"></s:Label>
@@ -30,7 +31,7 @@
         <s:Button label="添加"   click="button3_clickHandler(event)"/>
         <s:Button label="修改"   click="button1_clickHandler(event)"/>
         <s:Button label="删除"   click="button2_clickHandler(event)"/>
-
+五、
         </s:navigationContent>
             <fx:Script><![CDATA[
                 import mx.events.CloseEvent;
