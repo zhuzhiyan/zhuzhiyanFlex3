@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+  Created by liurui on 15/3/30.
+-->
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+        >
+    <!-- data字段，是由系统自动构建的，在渲染器里可以随意访问data中的属性-->
+    <s:HGroup verticalAlign="middle" width="100%" >
+        <s:Label text="{data.名称}"/>
+        <s:Spacer width="100%"/>
+        <s:CheckBox enabled="false" id="cb" selected="{data.是否完成}" />
+    </s:HGroup>
+
+
+    <fx:Script><![CDATA[
+        ]]></fx:Script>
+</s:ItemRenderer>

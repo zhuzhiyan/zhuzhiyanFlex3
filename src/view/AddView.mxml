@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009"
+        xmlns:s="library://ns.adobe.com/flex/spark"
+        >
+
+    <s:layout>
+        <s:VerticalLayout/>
+    </s:layout>
+
+    <s:TextInput id="txtm" text="{data!=null?data.item!=null?data.item.名称:'':''}"  />
+    <s:CheckBox id="chkBox" label="是否完成" selected="{data!=null?data.item!=null?data.item.是否完成:false:false}"  />
+
+
+    <s:navigationContent>
+        <s:Button label="Home" click="navigator.popToFirstView()"/>
+        <s:Button label="保存" click="save()"/>
+
+    </s:navigationContent>
+
+    <fx:Script><![CDATA[
+        import mx.rpc.events.ResultEvent;
+        import mx.rpc.soap.WebService;
+
+        import spark.components.Alert;
+        import spark.components.Label;
+
+        public function save():void
+       {
+
+           var ws :mx.rpc.soap.WebService = new mx.rpc.soap.WebService();
+           ws.wsdl= "http://localhost:63598/Service1.asmx?wsdl";
+           ws.addEventListener(ResultEvent.RESULT,resultFunction);//增加返回结果的监听
+           if(data.state=="Add")
+           {
+
+               if(txtm.text=="")
+               {
+                   Alert.show("任务不能为空！");
+                   return;
+               }
+               ws.getOperation("fnAdd").send(txtm.text,chkBox.selected?"1":"0");
+               ws.loadWSDL();
+               navigator.pushView(view.ListView);
+               var listView:ListView = navigator.activeView as ListView;
+               listView.select();
+               Alert.show("添加成功！");
+           }
+           else
+           {
+               ws.getOperation("fnEdit").send(data.item["ID"].toString(),txtm.text,chkBox.selected?"1":"0");
+               ws.loadWSDL();
+               navigator.pushView(view.ListView);
+               var listView:ListView = navigator.activeView as ListView;
+               listView.select();
+               Alert.show("修改成功！");
+           }
+
+
+       }
+
+        private function resultFunction(event:ResultEvent):void {
+
+        }
+
+        ]]></fx:Script>
+
+
+</s:View>

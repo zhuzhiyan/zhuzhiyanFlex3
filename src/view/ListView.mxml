@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!--
+  Created by liurui on 15/3/30.
+-->
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" creationComplete="select()" >
+    <!-- 通过指定itemRenderer 的方式更改list的构建元素-->
+    <s:List id="listall"  dataProvider="{list}" width="100%" height="100%"
+            itemRenderer="renderer.CheckListItemRenderer" ></s:List>
+    <fx:Script><![CDATA[
+        import mx.collections.ArrayCollection;
+        import mx.events.FlexEvent;
+        import mx.rpc.events.ResultEvent;
+        import mx.rpc.soap.WebService;
+
+        import spark.components.Alert;
+
+        public function select():void {
+            var ws:WebService = new WebService();
+            ws.wsdl = "http://localhost:63598/Service1.asmx?wsdl";
+            ws.addEventListener(ResultEvent.RESULT, resultFunction);//增加返回结果的监听
+            ws.getOperation("Select").send();
+            ws.loadWSDL();
+        }
+
+        [Bindable]
+        private var list:ArrayCollection = null;
+
+        private function resultFunction(event:ResultEvent):void {
+            list = event.result.Tables.Table1.Rows as ArrayCollection;
+        }
+
+        private function onClick():void {
+
+            if (listall.selectedItem == null) {
+                Alert.show("请先选择待办事项！");
+                return;
+            }
+            var item:Object = listall.selectedItem;
+            if (item["是否完成"] == true) {
+                var ws:mx.rpc.soap.WebService = new mx.rpc.soap.WebService();
+                ws.wsdl = "http://localhost:63598/Service1.asmx?wsdl";
+                ws.addEventListener(ResultEvent.RESULT, resultFunction);//增加返回结果的监听
+                ws.getOperation("fnEdit").send(data.item["ID"].toString(), data.item["名称"].toString(), data.item["是否完成"] ? "1" : "0");
+                ws.loadWSDL();
+
+                Alert.show("修改成功！");
+            }
+
+        }
+
+        ]]></fx:Script>
+
+
+
+
+</s:View>

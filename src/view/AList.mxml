@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009"
+        xmlns:s="library://ns.adobe.com/flex/spark"
+        title="View Menu Example">
+
+    <fx:Script>
+               <![CDATA[
+
+        import mx.core.FlexGlobals;
+
+        private function onClick(e:Event):void
+        {
+            FlexGlobals.topLevelApplication.viewMenuOpen=true;
+        }
+
+        private function onSelected(e:Event):void
+        {
+            myLabel.text = e.currentTarget.label + " selected";
+        }
+
+        ]]>
+       </fx:Script>
+
+    <s:Label id="myLabel"/>
+
+    <s:Button id="myButton"
+              label="Open Menu!"
+              click="onClick(event)"/>
+
+    <s:viewMenuItems>
+
+        <s:ViewMenuItem label="Add"
+                        click="onSelected(event)"/>
+        <s:ViewMenuItem label="Update"
+                        click="onSelected(event)"/>
+        <s:ViewMenuItem label="Delete"
+                        click="onSelected(event)"/>
+
+    </s:viewMenuItems>
+
+</s:View>

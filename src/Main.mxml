@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ViewNavigatorApplication xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+                            firstView="view.ListView"  currentState="all">
+    <s:states>
+        <s:State name="add"/>
+        <s:State name="edit"/>
+        <s:State name="all"/>
+    </s:states>
+
+    <fx:Style>
+        @namespace s "library://ns.adobe.com/flex/spark";
+
+        global {
+            fontSize: 18;
+            color: black;
+        }
+
+        s|Button {
+            skinClass: ClassReference("flatspark.skins.ButtonSkin");
+        }
+
+
+
+    </fx:Style>
+<s:titleContent>
+<s:Label id="lbldb" text ="待办事项" color="blue" fontWeight="bold"></s:Label>
+        </s:titleContent>
+    <s:navigationContent>
+        <s:Button label="Home" click="button4_clickHandler(event)"/>
+        <s:Button label="添加"   click="button3_clickHandler(event)"/>
+        <s:Button label="修改"   click="button1_clickHandler(event)"/>
+        <s:Button label="删除"   click="button2_clickHandler(event)"/>
+
+        </s:navigationContent>
+            <fx:Script><![CDATA[
+                import mx.events.CloseEvent;
+                import mx.rpc.events.ResultEvent;
+                import mx.rpc.soap.WebService;
+
+                import spark.components.Alert;
+
+                import spark.components.View;
+
+                import view.AList;
+                import view.AddView;
+                import view.ListView;
+
+
+
+
+
+                private function button1_clickHandler(event:MouseEvent):void {
+
+
+                    if (navigator.activeView is ListView) {
+
+                        var listView:ListView = navigator.activeView as ListView;
+                        if (listView.listall.selectedItem == null) {
+                            Alert.show("请先选择待办事项！");
+                            return;
+                        }
+
+                        lbldb.text = "修改";
+                        var item:Object = listView.listall.selectedItem;
+                        navigator.pushView(view.AddView, {state: 'Edit', item: item});
+                    }
+
+
+                }
+
+                private function button2_clickHandler(event:MouseEvent):void {
+
+
+                    var ws:mx.rpc.soap.WebService = new mx.rpc.soap.WebService();
+                    ws.wsdl = "http://localhost:63598/Service1.asmx?wsdl";
+                    ws.addEventListener(ResultEvent.RESULT, resultFunction);//增加返回结果的监听
+
+                    var listView:ListView = navigator.activeView as ListView;
+                    if (listView.listall.selectedItem == null) {
+                        Alert.show("请先选择待办事项！");
+                        return;
+                    }
+
+                    var itemactive:Object = listView.listall.selectedItem;
+
+                    ws.getOperation("fnDelete").send(itemactive["ID"]);
+                    ws.loadWSDL();
+                    navigator.pushView(view.ListView);
+                    listView.select();
+
+                    Alert.show("删除成功！");
+
+
+                }
+
+                private function resultFunction(event:ResultEvent):void {
+
+                }
+
+                private function button3_clickHandler(event:MouseEvent):void {
+                    navigator.pushView(AddView, {state: 'Add'});
+                    lbldb.text = "新建";
+                }
+
+                private function button4_clickHandler(event:MouseEvent):void {
+                    navigator.popToFirstView();
+                    lbldb.text = "待办事项";
+                }
+                ]]></fx:Script>
+
+
+</s:ViewNavigatorApplication>
+
