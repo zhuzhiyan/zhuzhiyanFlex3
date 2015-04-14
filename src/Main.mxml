@@ -31,7 +31,7 @@
         <s:Button label="添加"   click="button3_clickHandler(event)"/>
         <s:Button label="修改"   click="button1_clickHandler(event)"/>
         <s:Button label="删除"   click="button2_clickHandler(event)"/>
-五、
+
         </s:navigationContent>
             <fx:Script><![CDATA[
                 import mx.events.CloseEvent;
@@ -73,7 +73,7 @@
 
 
                     var ws:mx.rpc.soap.WebService = new mx.rpc.soap.WebService();
-                    ws.wsdl = "http://localhost:63598/Service1.asmx?wsdl";
+                    ws.wsdl = "http://192.168.180.183:8091/Service1.asmx?wsdl";
                     ws.addEventListener(ResultEvent.RESULT, resultFunction);//增加返回结果的监听
 
                     var listView:ListView = navigator.activeView as ListView;
@@ -104,8 +104,8 @@
                 }
 
                 private function button4_clickHandler(event:MouseEvent):void {
-                    navigator.popToFirstView();
-                    lbldb.text = "待办事项";
+                        navigator.popToFirstView();
+                        lbldb.text = "待办事项";
                 }
                 ]]></fx:Script>
 

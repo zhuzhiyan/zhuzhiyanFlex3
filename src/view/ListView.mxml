@@ -9,6 +9,7 @@
     <fx:Script><![CDATA[
         import mx.collections.ArrayCollection;
         import mx.events.FlexEvent;
+        import mx.rpc.events.FaultEvent;
         import mx.rpc.events.ResultEvent;
         import mx.rpc.soap.WebService;
 
@@ -16,8 +17,11 @@
 
         public function select():void {
             var ws:WebService = new WebService();
-            ws.wsdl = "http://localhost:63598/Service1.asmx?wsdl";
+
+           //ws.wsdl = "http://localhost:50478/Service1.asmx?wsdl";
+            ws.wsdl = "http://192.168.180.183:8091/Service1.asmx?wsdl";
             ws.addEventListener(ResultEvent.RESULT, resultFunction);//增加返回结果的监听
+            ws.addEventListener(FaultEvent.FAULT, ws_faultHandler);
             ws.getOperation("Select").send();
             ws.loadWSDL();
         }
@@ -38,7 +42,7 @@
             var item:Object = listall.selectedItem;
             if (item["是否完成"] == true) {
                 var ws:mx.rpc.soap.WebService = new mx.rpc.soap.WebService();
-                ws.wsdl = "http://localhost:63598/Service1.asmx?wsdl";
+                ws.wsdl = "http://192.168.180.183:8091/Service1.asmx?wsdl";
                 ws.addEventListener(ResultEvent.RESULT, resultFunction);//增加返回结果的监听
                 ws.getOperation("fnEdit").send(data.item["ID"].toString(), data.item["名称"].toString(), data.item["是否完成"] ? "1" : "0");
                 ws.loadWSDL();
@@ -48,6 +52,9 @@
 
         }
 
+        private function ws_faultHandler(event:FaultEvent):void {
+            trace(event)
+        }
         ]]></fx:Script>
 
 

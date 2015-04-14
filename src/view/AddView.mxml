@@ -28,7 +28,7 @@
        {
 
            var ws :mx.rpc.soap.WebService = new mx.rpc.soap.WebService();
-           ws.wsdl= "http://localhost:63598/Service1.asmx?wsdl";
+           ws.wsdl= "http://192.168.180.183:8091/Service1.asmx?wsdl";
            ws.addEventListener(ResultEvent.RESULT,resultFunction);//增加返回结果的监听
            if(data.state=="Add")
            {
